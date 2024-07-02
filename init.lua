@@ -171,6 +171,10 @@ vim.g.loaded_netrwPlugin = 1
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
+-- use arrow key in command
+vim.api.nvim_set_keymap('c', '<Down>', '<C-N>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('c', '<Up>', '<C-P>', { noremap = true, silent = true })
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
