@@ -171,9 +171,15 @@ vim.g.loaded_netrwPlugin = 1
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
--- use arrow key in command
+-- use arrow key in command window
 vim.api.nvim_set_keymap('c', '<Down>', '<C-N>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('c', '<Up>', '<C-P>', { noremap = true, silent = true })
+
+-- navigate buffers
+vim.keymap.set('n', '<C-PageUp>', '<cmd>BufferLineCycleNext<CR>', { desc = 'Move focus to the next buffer' })
+vim.keymap.set('n', '<C-PageDown>', '<cmd>BufferLineCyclePrev<CR>', { desc = 'Move focus to the prev buffer' })
+vim.keymap.set('n', 'H', '<cmd>BufferLineCyclePrev<CR>', { desc = 'Move focus to the next buffer' })
+vim.keymap.set('n', 'L', '<cmd>BufferLineCycleNext<CR>', { desc = 'Move focus to the prev buffer' })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })

@@ -13,15 +13,7 @@ return {
   keys = {
     { '\\', ':Neotree reveal<CR>', { desc = 'NeoTree reveal' } },
   },
-  opts = {
-    filesystem = {
-      window = {
-        mappings = {
-          ['\\'] = 'close_window',
-        },
-      },
-    },
-  },
+  opts = {},
   config = function()
     -- If you want icons for diagnostic errors, you'll need to define them somewhere:
     vim.fn.sign_define('DiagnosticSignError', { text = ' ', texthl = 'DiagnosticSignError' })
@@ -174,6 +166,7 @@ return {
           --}
           ['m'] = 'move', -- takes text input for destination, also accepts the optional config.show_path option like "add".
           ['q'] = 'close_window',
+          ['\\'] = 'close_window',
           ['R'] = 'refresh',
           ['?'] = 'show_help',
           ['<'] = 'prev_source',
