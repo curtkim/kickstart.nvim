@@ -602,7 +602,7 @@ require('lazy').setup({
         -- But for many setups, the LSP (`tsserver`) will work just fine
         tsserver = {},
         --
-
+        nil_ls = {},
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
@@ -618,6 +618,15 @@ require('lazy').setup({
           },
         },
       }
+
+      for server_name, server in pairs(servers) do
+        -- local server = servers[server_name] or {}
+        -- This handles overriding only values explicitly passed
+        -- by the server configuration above. Useful when disabling
+        -- certain features of an LSP (for example, turning off formatting for tsserver)
+        server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+        require('lspconfig')[server_name].setup(server)
+      end
     end,
   },
 
