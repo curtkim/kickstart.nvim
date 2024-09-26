@@ -18,11 +18,11 @@ return {
     'nvim-neotest/nvim-nio',
 
     -- Installs the debug adapters for you
-    'williamboman/mason.nvim',
-    'jay-babu/mason-nvim-dap.nvim',
+    -- 'williamboman/mason.nvim',
+    -- 'jay-babu/mason-nvim-dap.nvim',
 
     -- Add your own debuggers here
-    'leoluz/nvim-dap-go',
+    -- 'leoluz/nvim-dap-go',
   },
   keys = function(_, keys)
     local dap = require 'dap'
@@ -50,23 +50,6 @@ return {
     local dap = require 'dap'
     local dapui = require 'dapui'
 
-    require('mason-nvim-dap').setup {
-      -- Makes a best effort to setup the various debuggers with
-      -- reasonable debug configurations
-      automatic_installation = true,
-
-      -- You can provide additional configuration to the handlers,
-      -- see mason-nvim-dap README for more information
-      handlers = {},
-
-      -- You'll need to check that you have the required things installed
-      -- online, please don't ask me how to install them :)
-      ensure_installed = {
-        -- Update this to ensure that you have the debuggers for the langs you want
-        'delve',
-      },
-    }
-
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
     dapui.setup {
@@ -93,12 +76,41 @@ return {
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
-    -- Install golang specific config
-    require('dap-go').setup {
-      delve = {
-        -- On Windows delve must be run attached or it crashes.
-        -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
-        detached = vim.fn.has 'win32' == 0,
+    --    -- Install golang specific config
+    --    require('dap-go').setup {
+    --      delve = {
+    --        -- On Windows delve must be run attached or it crashes.
+    --        -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
+    --        detached = vim.fn.has 'win32' == 0,
+    --      },
+    --    }
+    -- See
+
+    -- https://sourceware.org/gdb/current/onlinedocs/gdb.html/Interpreters.html
+    -- https://sourceware.org/gdb/current/onlinedocs/gdb.html/Debugger-Adapter-Protocol.html
+    dap.adapters.gdb = {
+      id = 'gdb',
+      type = 'executable',
+      command = 'gdb',
+      args = { '--quiet', '--interpreter=dap' },
+    }
+
+    dap.configurations.cpp = {
+      {
+        name = 'Run executable (GDB)',
+        type = 'gdb',
+        request = 'launch',
+        -- This requires special handling of 'run_last', see
+        -- https://github.com/mfussenegger/nvim-dap/issues/1025#issuecomment-1695852355
+        program = function()
+          local path = vim.fn.input {
+            prompt = 'Path to executable: ',
+            default = vim.fn.getcwd() .. '/',
+            completion = 'file',
+          }
+
+          return (path and path ~= '') and path or dap.ABORT
+        end,
       },
     }
   end,
