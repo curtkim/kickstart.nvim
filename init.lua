@@ -190,6 +190,41 @@ vim.keymap.set('n', '<C-c>', '<cmd>bp|bd #<CR>', { desc = 'close current buffer 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
+-- Search UP for a markdown header
+-- https://www.youtube.com/watch?v=9S7Zli9hzTE
+-- Make sure to follow proper markdown convention, and you have a single H1
+-- heading at the very top of the file
+-- This will only search for H2 headings and above
+vim.keymap.set('n', 'gk', function()
+  -- `?` - Start a search backwards from the current cursor position.
+  -- `^` - Match the beginning of a line.
+  -- `##` - Match 2 ## symbols
+  -- `\\+` - Match one or more occurrences of prev element (#)
+  -- `\\s` - Match exactly one whitespace character following the hashes
+  -- `.*` - Match any characters (except newline) following the space
+  -- `$` - Match extends to end of line
+  vim.cmd 'silent! ?^##\\+\\s.*$'
+  -- Clear the search highlight
+  vim.cmd 'nohlsearch'
+end, { desc = 'Go to previous markdown header' })
+
+-- Search DOWN for a markdown header
+-- Make sure to follow proper markdown convention, and you have a single H1
+-- heading at the very top of the file
+-- This will only search for H2 headings and above
+vim.keymap.set('n', 'gj', function()
+  -- `/` - Start a search forwards from the current cursor position.
+  -- `^` - Match the beginning of a line.
+  -- `##` - Match 2 ## symbols
+  -- `\\+` - Match one or more occurrences of prev element (#)
+  -- `\\s` - Match exactly one whitespace character following the hashes
+  -- `.*` - Match any characters (except newline) following the space
+  -- `$` - Match extends to end of line
+  vim.cmd 'silent! /^##\\+\\s.*$'
+  -- Clear the search highlight
+  vim.cmd 'nohlsearch'
+end, { desc = 'Go to next markdown header' })
+
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
@@ -267,6 +302,13 @@ require('lazy').setup({
   --      'rcarriga/nvim-notify',
   --    },
   --  },
+  {
+    'echasnovski/mini.nvim',
+    version = '*',
+    config = function()
+      require('mini.ai').setup { n_lines = 500 }
+    end,
+  },
   {
     'j-hui/fidget.nvim',
     opts = {
