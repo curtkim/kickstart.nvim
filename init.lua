@@ -691,6 +691,7 @@ require('lazy').setup({
             },
           },
         },
+        bashls = {},
       }
 
       for server_name, server in pairs(servers) do
