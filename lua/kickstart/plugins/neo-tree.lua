@@ -12,6 +12,7 @@ return {
   cmd = 'Neotree',
   keys = {
     { '\\', ':Neotree toggle<CR>', desc = 'NeoTree toggle' },
+    { '|', ':Neotree reveal<CR>', desc = 'NeoTree reveal' },
   },
   opts = {},
   config = function()
